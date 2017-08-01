@@ -1,0 +1,12 @@
+@ECHO OFF
+
+set apkDir = "C:\\Users\\zackl\\Desktop\\ResearchTool\\ASM\\ASM_Instrumenter\\testApk"
+
+C:\\Users\\zackl\\Desktop\\ResearchTool\\dex2jar-2.0\\d2j-dex2jar.bat %%apkDir%%\\%1.apk -o %%apkDir%%\\decompiled\\%1_dex2jar.jar
+
+if not exist "%%apkDir%%\\decompiled\\%1" mkdir %%apkDir%%\\decompiled\\%1
+
+cd %%apkDir%%\\decompiled\\%1
+jar xf %%apkDir%%\\decompiled\\%1_dex2jar.jar
+
+#/Applications/JD-GUI.app/Contents/MacOS/jd-gui $apkDir/decompiled/orig/$1_dex2jar.jar &

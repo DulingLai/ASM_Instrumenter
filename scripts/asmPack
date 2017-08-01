@@ -1,0 +1,82 @@
+#!/bin/tcsh -fx
+
+set apkDir = /Volumes/D/data/minst/apks/
+set andrTools = /Volumes/D/data/android_tools/
+set appName = $1_$2
+
+cd $apkDir/decompiled/asmOutput/$appName
+
+jar cf ../$appName.jar *
+
+echo "executing $andrTools/dex2jar-0.0.9.15/d2j-jar2dex.sh -f -o classes.dex ../$appName.jar"
+$andrTools/dex2jar-0.0.9.15/d2j-jar2dex.sh -f -o classes.dex ../$appName.jar
+
+#create new apk
+cp $apkDir/orig/$1.apk $apkDir/asmOutput/$appName.apk
+zip $apkDir/asmOutput/$appName.apk -d META-INF/SNAPCHAT.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/SNAPCHAT.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/BUBBLEWI.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/BUBBLEWI.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/WHATSAPP.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/WHATSAPP.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/RELEASE.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/RELEASE.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/ZEGDE-BE.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/ZEGDE-BE.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/KIK.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/KIK.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/CERT.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/CERT.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/NOIZ2.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/NOIZ2.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/ACTIVISI.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/ACTIVISI.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/ADBDROID.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/ADBDROID.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/TAPAS_RE.SF 
+zip $apkDir/asmOutput/$appName.apk -d META-INF/TAPAS_RE.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/TAPAS_RE.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/TAPAS_RE.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/GAMELOFT.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/GAMELOFT.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/GLUANDRO.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/GLUANDRO.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/FRUITNIN.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/FRUITNIN.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/EBG.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/EBG.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/MEDIOCRE.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/MEDIOCRE.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/MSFTSIG.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/MSFTSIG.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/QUIZ.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/QUIZ.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/ALIAS_NA.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/ALIAS_NA.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/FRUITSMO.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/FRUITSMO.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/NEWTOY.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/NEWTOY.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/BEONROAD.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/BEONROAD.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/NAVER_JA.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/NAVER_JA.RSA
+zip $apkDir/asmOutput/$appName.apk -d META-INF/96447545.SF
+zip $apkDir/asmOutput/$appName.apk -d META-INF/96447545.RSA
+
+
+    
+zip -r $apkDir/asmOutput/$appName.apk classes.dex
+rm classes.dex
+
+#sign
+#echo "executing $andrTools/dex2jar-0.0.9.15/d2j-apk-sign.sh -f -o $apkDir/asmOutput/$appName_signed.apk $apkDir/asmOutput/$appName.apk"
+#$andrTools/dex2jar-0.0.9.15/d2j-apk-sign.sh -f -o $apkDir/asmOutput/$appName_signed.apk $apkDir/asmOutput/$appName.apk
+#mv $apkDir/asmOutput/$appName_signed.apk $apkDir/asmOutput/$appName.apk
+
+
+jarsigner -sigalg SHA1withRSA -digestalg SHA1 -keystore $andrTools/key/julia-release-key.keystore $apkDir/asmOutput/$appName.apk julia_key -storepass mjulia
+jarsigner -verify $apkDir/asmOutput/$appName.apk
+
+#echo "executing /Applications/JD-GUI.app/Contents/MacOS/jd-gui $apkDir/decompiled/asmOutput/$appName.jar"
+#/Applications/JD-GUI.app/Contents/MacOS/jd-gui $apkDir/decompiled/asmOutput/$appName.jar &

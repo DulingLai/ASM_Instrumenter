@@ -1,0 +1,11 @@
+#!/bin/tcsh -fx
+
+set apkDir = /Volumes/D/data/minst/apks/
+
+/Volumes/D/data/android_tools/dex2jar-0.0.9.15/d2j-dex2jar.sh $apkDir/$1.apk -o $apkDir/decompiled/$1_dex2jar.jar
+
+/Applications/JD-GUI.app/Contents/MacOS/jd-gui $apkDir/decompiled/$1_dex2jar.jar
+
+#rm $apkDir/decompiled/$1_dex2jar.jar
+
+/Volumes/D/data/android_tools/apktool/apktool d $apkDir/$1.apk -o $apkDir/decompiled/$1_xmls
